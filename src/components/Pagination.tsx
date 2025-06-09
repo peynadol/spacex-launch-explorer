@@ -9,7 +9,7 @@ const Pagination = ({
   currentPage,
   setCurrentPage,
 }: PaginationProps) => {
-  const windowSize = 4;
+  const windowSize = 5;
 
   const startPage = Math.max(2, currentPage - Math.floor(windowSize / 2));
   const endPage = Math.min(totalPages - 1, startPage + windowSize - 1);

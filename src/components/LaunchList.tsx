@@ -31,10 +31,12 @@ const LaunchList = () => {
     <div>
       {launches.docs.map((launch) => (
         <LaunchCard
+          key={launch.id}
           patch={launch.links.patch.small}
           name={launch.name}
           date={launch.date_utc}
           success={launch.success}
+          id={launch.id}
         />
       ))}
       <Pagination
