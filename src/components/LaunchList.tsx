@@ -1,23 +1,26 @@
 import { useQuery } from "@tanstack/react-query";
 import { postQuery } from "../../spacexClient";
 import LaunchCard from "./LaunchCard";
+import Pagination from "./Pagination";
+import { useState } from "react";
 
-const body = {
-  query: {
-    upcoming: false,
-  },
-  options: {
-    limit: 8,
-    page: 1,
-    sort: {
-      date_utc: "desc",
-    },
-  },
-};
 const LaunchList = () => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const body = {
+    query: {
+      upcoming: false,
+    },
+    options: {
+      limit: 8,
+      page: currentPage,
+      sort: {
+        date_utc: "desc",
+      },
+    },
+  };
   const { data: launches, isLoading } = useQuery({
+    queryKey: ["launches", currentPage],
     queryFn: () => postQuery("launches/query", body),
-    queryKey: ["launches"],
   });
 
   if (isLoading) {
@@ -34,6 +37,11 @@ const LaunchList = () => {
           success={launch.success}
         />
       ))}
+      <Pagination
+        totalPages={launches.totalPages}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+      />
     </div>
   );
 };
