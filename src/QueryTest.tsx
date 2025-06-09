@@ -1,17 +1,22 @@
 import { useQuery } from "@tanstack/react-query";
+import { postQuery } from "../spacexClient";
 
-const fetchLaunches = async () => {
-  await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate network delay
-  const response = await fetch("https://api.spacexdata.com/v5/launches");
-  if (!response.ok) {
-    throw new Error("Network response was not ok");
-  }
-  return response.json();
+const body = {
+  query: {
+    upcoming: false,
+  },
+  options: {
+    limit: 8,
+    page: 1,
+    sort: {
+      date_utc: "desc",
+    },
+  },
 };
 
 const QueryTest = () => {
   const { data: launches, isLoading } = useQuery({
-    queryFn: fetchLaunches,
+    queryFn: () => postQuery("launches/query", body),
     queryKey: ["launches"],
   });
 
@@ -21,7 +26,7 @@ const QueryTest = () => {
 
   return (
     <div>
-      {launches.map((launch) => {
+      {launches.docs.map((launch) => {
         return (
           <div key={launch.id}>
             <h2>{launch.name}</h2>
