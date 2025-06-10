@@ -24,26 +24,30 @@ const LaunchList = () => {
   });
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <div className="text-center py-10">Loading...</div>;
   }
 
   return (
-    <div>
-      {launches.docs.map((launch) => (
-        <LaunchCard
-          key={launch.id}
-          patch={launch.links.patch.small}
-          name={launch.name}
-          date={launch.date_utc}
-          success={launch.success}
-          id={launch.id}
+    <div className="p-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mb-8">
+        {launches.docs.map((launch) => (
+          <LaunchCard
+            key={launch.id}
+            patch={launch.links.patch.small}
+            name={launch.name}
+            date={launch.date_utc}
+            success={launch.success}
+            id={launch.id}
+          />
+        ))}
+      </div>
+      <div className="flex justify-center">
+        <Pagination
+          totalPages={launches.totalPages}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
         />
-      ))}
-      <Pagination
-        totalPages={launches.totalPages}
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-      />
+      </div>
     </div>
   );
 };
